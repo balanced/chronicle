@@ -36,6 +36,12 @@ extras_require = {
     'sentry': [
         'raven >=3.5,<3.6',
     ],
+    'flask': [
+        'flask',
+    ],
+    'pyramid': [
+        'pyramid',
+    ],
     'gunicorn': [
         'gunicorn',
     ]

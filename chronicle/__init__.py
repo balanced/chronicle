@@ -1,11 +1,12 @@
 from __future__ import unicode_literals
 
 import argparse
+import importlib
 import re
 import logging
 
 
-__version__ = '1.0.2'
+__version__ = '1.0.7'
 
 
 class LogLevelAction(argparse.Action):
@@ -123,7 +124,7 @@ class ExtraFilter(logging.Filter):
         ...
         'filters': {
             'defaults': {
-                '()': 'sterling.log.ExtraFilter',
+                '()': 'chronicle.ExtraFilter',
                 'guru_id': '-',
             },
         ...
@@ -141,4 +142,30 @@ class ExtraFilter(logging.Filter):
         for k, v in self.extra.iteritems():
             if not hasattr(record, k):
                 setattr(record, k, v)
+        return True
+
+
+class LogVersionFilter(logging.Filter):
+    def __init__(self, package, key='version'):
+        super(LogVersionFilter, self).__init__()
+        self.package = package
+        self.key = key
+
+    def filter(self, record):
+        try:
+            pkg = importlib.import_module(self.package)
+            setattr(record, self.key, pkg.__version__)
+        except:
+            pass
+        return True
+
+
+class LogExtraFilter(logging.Filter):
+    def __init__(self, **extra):
+        super(LogExtraFilter, self).__init__()
+        self.extra = extra
+
+    def filter(self, record):
+        for k, v in self.extra.iteritems():
+            setattr(record, k, v)
         return True
