@@ -5,7 +5,7 @@ import re
 import logging
 
 
-__version__ = '1.0.0'
+__version__ = '1.0.2'
 
 
 class LogLevelAction(argparse.Action):
@@ -30,7 +30,7 @@ class LogNoiseFilter(logging.Filter):
         ),
         (
             logging.ERROR,
-            cc'newrelic.core.application',
+            'newrelic.core.application',
             re.compile('^Unable to report main transaction metrics.*')
         ),
         (
